@@ -12,6 +12,10 @@ on:
       - trunk
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   deploy:
     uses: Pod-Pilot/kubeletto-actions/.github/workflows/reusable-deploy.yml@v1
