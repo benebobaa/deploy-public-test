@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 type PageData struct {
@@ -35,13 +36,32 @@ func main() {
 		Contact:     contact,
 	}
 
-	// Setup HTTP server
+	// Setup HTTP server with logging middleware
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		startTime := time.Now()
+		
+		// Log the access request
+		log.Printf("ACCESS: %s - %s %s - User-Agent: %s - Remote: %s", 
+			startTime.Format("2006-01-02 15:04:05"), 
+			r.Method, 
+			r.URL.Path,
+			r.Header.Get("User-Agent"),
+			r.RemoteAddr,
+		)
+		
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		if err := tmpl.Execute(w, pageData); err != nil {
 			log.Printf("Error executing template: %v", err)
 			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
 		}
+		
+		// Log response time
+		log.Printf("RESPONSE: %s %s - Duration: %v", 
+			r.Method, 
+			r.URL.Path,
+			time.Since(startTime),
+		)
 	})
 
 	port := getEnv("PORT", "8080")
