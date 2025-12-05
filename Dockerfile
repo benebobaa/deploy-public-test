@@ -4,15 +4,11 @@ FROM golang:1.24-alpine AS builder
 # Set the working directory
 WORKDIR /app
 
-# Copy go mod file and download dependencies
-COPY go.mod go.sum ./
-RUN go mod download
-
 # Copy source code
 COPY . .
 
 # Build the binary with optimizations for smaller size
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -a -installsuffix cgo -o main .
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o main .
 
 # Final stage
 FROM alpine:3.19
