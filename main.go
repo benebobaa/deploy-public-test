@@ -78,7 +78,7 @@ func (rw *responseWriter) WriteHeader(code int) {
 
 func main() {
 	// Read environment variables with defaults
-	title := getEnv("APP_TITLE", "Welcome to My Landing Page")
+	title := getEnv("APP_TITLE", "Welcome to My Landing Page!")
 	description := getEnv("APP_DESCRIPTION", "A simple, configurable landing page built with Go")
 	version := getEnv("APP_VERSION", "1.0.0")
 	environment := getEnv("APP_ENV", "development")
