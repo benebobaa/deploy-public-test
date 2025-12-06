@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <meta name="description" content="{{.Description}}">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">StartupCo</div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/docs">Docs</a></li>
+                <li><a href="/pricing">Pricing</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+            <a href="/contact" class="cta-button">Get Started</a>
+        </nav>
+    </header>
+
+    <main>
+<section class="hero">
+    <div class="container">
+        <h1>Documentation</h1>
+        <p class="subtitle">Everything you need to get started with our platform</p>
+    </div>
+</section>
+
+<section class="docs">
+    <div class="container">
+        <div class="docs-content">
+            <div class="doc-section">
+                <h2>Getting Started</h2>
+                <p>Welcome to our comprehensive documentation. This guide will help you understand our platform and get up and running quickly.</p>
+                
+                <h3>Quick Start</h3>
+                <p>Follow these simple steps to get your first application running:</p>
+                <ol>
+                    <li>Sign up for a free account</li>
+                    <li>Create your first project</li>
+                    <li>Configure your application settings</li>
+                    <li>Deploy your application</li>
+                </ol>
+                
+                <h3>Installation</h3>
+                <p>Install our CLI tool to get started:</p>
+                <div class="code-block">
+$ curl -fsSL https://get.ourplatform.com | sh
+$ platform --version
+$ platform auth login
+                </div>
+            </div>
+            
+            <div class="doc-section">
+                <h2>API Reference</h2>
+                <p>Our RESTful API provides comprehensive access to all platform features.</p>
+                
+                <h3>Authentication</h3>
+                <p>All API requests require authentication using your API key:</p>
+                <div class="code-block">
+curl -X GET "https://api.ourplatform.com/v1/projects" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json"
+                </div>
+                
+                <h3>Endpoints</h3>
+                <ul>
+                    <li><strong>GET /v1/projects</strong> - List all projects</li>
+                    <li><strong>POST /v1/projects</strong> - Create a new project</li>
+                    <li><strong>GET /v1/projects/:id</strong> - Get project details</li>
+                    <li><strong>PUT /v1/projects/:id</strong> - Update project</li>
+                    <li><strong>DELETE /v1/projects/:id</strong> - Delete project</li>
+                </ul>
+            </div>
+            
+            <div class="doc-section">
+                <h2>Configuration</h2>
+                <p>Learn how to configure your applications for optimal performance.</p>
+                
+                <h3>Environment Variables</h3>
+                <p>Configure your application using environment variables:</p>
+                <div class="code-block">
+# Database Configuration
+DATABASE_URL=postgresql://user:pass@localhost/db
+REDIS_URL=redis://localhost:6379
+
+# Application Settings
+NODE_ENV=production
+PORT=3000
+API_KEY=your-secret-key
+                </div>
+                
+                <h3>Deployment Settings</h3>
+                <p>Configure how your application is deployed:</p>
+                <div class="code-block">
+# platform.json
+{
+  "name": "my-app",
+  "runtime": "node-18",
+  "build": {
+    "command": "npm run build",
+    "output": "dist"
+  },
+  "deploy": {
+    "startCommand": "npm start",
+    "healthCheck": "/health",
+    "autoScaling": {
+      "minInstances": 1,
+      "maxInstances": 10
+    }
+  }
+}
+                </div>
+            </div>
+            
+            <div class="doc-section">
+                <h2>Best Practices</h2>
+                <p>Follow these best practices to get the most out of our platform:</p>
+                
+                <h3>Security</h3>
+                <ul>
+                    <li>Always use HTTPS in production</li>
+                    <li>Keep your API keys secure</li>
+                    <li>Implement proper authentication and authorization</li>
+                    <li>Regularly update dependencies</li>
+                </ul>
+                
+                <h3>Performance</h3>
+                <ul>
+                    <li>Optimize your database queries</li>
+                    <li>Implement caching strategies</li>
+                    <li>Use CDN for static assets</li>
+                    <li>Monitor and analyze performance metrics</li>
+                </ul>
+            </div>
+            
+            <div class="doc-section">
+                <h2>Troubleshooting</h2>
+                <p>Common issues and their solutions:</p>
+                
+                <h3>Deployment Issues</h3>
+                <p><strong>Issue:</strong> Deployment fails with build error</p>
+                <p><strong>Solution:</strong> Check your build command and ensure all dependencies are properly installed.</p>
+                
+                <p><strong>Issue:</strong> Application crashes on startup</p>
+                <p><strong>Solution:</strong> Review logs and check environment variables configuration.</p>
+                
+                <h3>Performance Issues</h3>
+                <p><strong>Issue:</strong> Slow response times</p>
+                <p><strong>Solution:</strong> Implement caching, optimize database queries, and consider scaling your resources.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container" style="text-align: center;">
+        <h2>Need More Help?</h2>
+        <p>Our support team is here to help you succeed.</p>
+        <a href="/contact" class="cta-button">Contact Support</a>
+    </div>
+</section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Product</h3>
+                    <ul>
+                        <li><a href="/">Features</a></li>
+                        <li><a href="/pricing">Pricing</a></li>
+                        <li><a href="/docs">Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 StartupCo. Version {{.Version}} - Running in {{.Environment}} mode</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

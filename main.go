@@ -76,6 +76,29 @@ func (rw *responseWriter) WriteHeader(code int) {
 	rw.ResponseWriter.WriteHeader(code)
 }
 
+func renderTemplate(w http.ResponseWriter, r *http.Request, templateName string, data PageData, templates *template.Template, podName string, namespace string) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	
+	if err := templates.ExecuteTemplate(w, templateName, data); err != nil {
+		// Log error in structured format
+		errorEntry := LogEntry{
+			Timestamp: time.Now().Format(time.RFC3339),
+			Level:     "ERROR",
+			Message:   err.Error(),
+			Path:      r.URL.Path,
+			PodName:   podName,
+			Namespace: namespace,
+		}
+		if logData, err := json.Marshal(errorEntry); err == nil {
+			log.Printf("%s", string(logData))
+		}
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+}
+
+
+
 func main() {
 	// Read environment variables with defaults
 	title := getEnv("APP_TITLE", "Welcome to My Landing Page!")
@@ -88,11 +111,17 @@ func main() {
 	podName := getEnv("POD_NAME", "local-dev")
 	namespace := getEnv("POD_NAMESPACE", "default")
 
-	// Parse HTML template
-	tmpl := template.Must(template.ParseFiles("templates/index.html"))
+	// Parse HTML templates
+	templates, err := template.ParseGlob("templates/*.html")
+	if err != nil {
+		log.Fatal("Error parsing templates:", err)
+	}
 
-	// Prepare page data
-	pageData := PageData{
+	// Setup HTTP routes
+	mux := http.NewServeMux()
+	
+	// Common page data
+	basePageData := PageData{
 		Title:       title,
 		Description: description,
 		Version:     version,
@@ -100,30 +129,51 @@ func main() {
 		Contact:     contact,
 	}
 
-	// Setup HTTP handler
-	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		if err := tmpl.Execute(w, pageData); err != nil {
-			// Log error in structured format
-			errorEntry := LogEntry{
-				Timestamp: time.Now().Format(time.RFC3339),
-				Level:     "ERROR",
-				Message:   err.Error(),
-				Path:      r.URL.Path,
-				PodName:   podName,
-				Namespace: namespace,
-			}
-			if logData, err := json.Marshal(errorEntry); err == nil {
-				log.Printf("%s", string(logData))
-			}
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	// Home page handler
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			http.NotFound(w, r)
 			return
 		}
+		pageData := basePageData
+		pageData.Title = title
+		renderTemplate(w, r, "index.html", pageData, templates, podName, namespace)
 	})
+
+	// About page handler
+	mux.HandleFunc("/about", func(w http.ResponseWriter, r *http.Request) {
+		pageData := basePageData
+		pageData.Title = "About - " + title
+		renderTemplate(w, r, "about.html", pageData, templates, podName, namespace)
+	})
+
+	// Documentation page handler
+	mux.HandleFunc("/docs", func(w http.ResponseWriter, r *http.Request) {
+		pageData := basePageData
+		pageData.Title = "Documentation - " + title
+		renderTemplate(w, r, "docs.html", pageData, templates, podName, namespace)
+	})
+
+	// Pricing page handler
+	mux.HandleFunc("/pricing", func(w http.ResponseWriter, r *http.Request) {
+		pageData := basePageData
+		pageData.Title = "Pricing - " + title
+		renderTemplate(w, r, "pricing.html", pageData, templates, podName, namespace)
+	})
+
+	// Contact page handler
+	mux.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
+		pageData := basePageData
+		pageData.Title = "Contact - " + title
+		renderTemplate(w, r, "contact.html", pageData, templates, podName, namespace)
+	})
+
+	// Static files handler (CSS, JS, images)
+	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))
 	
 	// Wrap handler with access logger
 	logger := &accessLogger{
-		handler:   handler,
+		handler:   mux,
 		podName:   podName,
 		namespace: namespace,
 	}
