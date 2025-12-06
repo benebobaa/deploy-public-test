@@ -119,7 +119,14 @@ func main() {
 	namespace := getEnv("POD_NAMESPACE", "default")
 
 	// Parse HTML templates
-	templates, err := template.ParseGlob("templates/*.html")
+	templates, err := template.ParseFiles(
+		"templates/index.html",
+		"templates/about.html",
+		"templates/docs.html",
+		"templates/pricing.html",
+		"templates/contact.html",
+		"templates/pokemon.html",
+	)
 	if err != nil {
 		log.Fatal("Error parsing templates:", err)
 	}
@@ -173,6 +180,14 @@ func main() {
 		pageData := basePageData
 		pageData.Title = "Contact - " + title
 		renderTemplate(w, r, "contact.html", pageData, templates, podName, namespace)
+	})
+
+	// Pokémon page handler
+	mux.HandleFunc("/pokemon", func(w http.ResponseWriter, r *http.Request) {
+		pageData := basePageData
+		pageData.Title = "Pokémon Database - " + title
+		pageData.Description = "Explore Pokémon data, types, and abilities"
+		renderTemplate(w, r, "pokemon.html", pageData, templates, podName, namespace)
 	})
 
 	// Static files handler (CSS, JS, images) with proper MIME types

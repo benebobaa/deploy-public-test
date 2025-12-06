@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Database</title>
+    <meta name="description" content="Explore Pokémon data, types, and abilities">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .pokemon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+        
+        .pokemon-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .pokemon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .pokemon-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+        }
+        
+        .pokemon-info {
+            padding: 1.5rem;
+        }
+        
+        .pokemon-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-transform: capitalize;
+        }
+        
+        .pokemon-id {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .pokemon-types {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        
+        .type-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .type-normal { background: #A8A878; color: white; }
+        .type-fire { background: #F08030; color: white; }
+        .type-water { background: #6890F0; color: white; }
+        .type-grass { background: #78C850; color: white; }
+        .type-electric { background: #F8D030; color: white; }
+        .type-ice { background: #98D8D8; color: white; }
+        .type-fighting { background: #C03028; color: white; }
+        .type-poison { background: #A040A0; color: white; }
+        .type-ground { background: #E0C068; color: white; }
+        .type-flying { background: #A890F0; color: white; }
+        .type-psychic { background: #F85888; color: white; }
+        .type-bug { background: #A8B820; color: white; }
+        .type-rock { background: #B8A038; color: white; }
+        .type-ghost { background: #705898; color: white; }
+        .type-dragon { background: #7038F8; color: white; }
+        .type-dark { background: #705848; color: white; }
+        .type-steel { background: #B8B8D0; color: white; }
+        .type-fairy { background: #EE99AC; color: white; }
+        
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            font-size: 1.2rem;
+            color: #6b7280;
+        }
+        
+        .search-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+        
+        .search-button {
+            width: 100%;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .search-button:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">PokéDex</div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/pokemon">Pokémon</a></li>
+                <li><a href="/pricing">Pricing</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+            <a href="/contact" class="cta-button">Get Started</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Pokémon Database</h1>
+                <p class="subtitle">Explore your favorite Pokémon with our comprehensive database</p>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <div class="search-container">
+                    <form id="searchForm">
+                        <input type="text" id="searchInput" class="search-input" placeholder="Enter Pokémon name or ID..." autocomplete="off">
+                        <button type="submit" class="search-button">Search Pokémon</button>
+                    </form>
+                </div>
+                
+                <div id="pokemonGrid" class="pokemon-grid">
+                    <div class="loading">Loading Pokémon data...</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Features</h3>
+                    <ul>
+                        <li><a href="/pokemon">Pokémon Database</a></li>
+                        <li><a href="/">Type Calculator</a></li>
+                        <li><a href="#">Evolution Chains</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PokéDex. Version {{.Version}} - Running in {{.Environment}} mode</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Pokémon API Data
+        let pokemonData = [];
+        let isLoading = false;
+
+        // Fetch Pokémon data from API
+        async function fetchPokemonData() {
+            if (isLoading) return;
+            
+            try {
+                isLoading = true;
+                showLoading(true);
+                
+                // Fetch first 151 Pokémon (original generation)
+                const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=151');
+                const data = await response.json();
+                
+                pokemonData = data.results.map((pokemon, index) => {
+                    const id = index + 1;
+                    const paddedId = String(id).padStart(3, '0');
+                    return {
+                        ...pokemon,
+                        id: id,
+                        paddedId: paddedId,
+                        imageUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${paddedId}.png`
+                    };
+                });
+                
+                displayPokemon(pokemonData);
+                isLoading = false;
+            } catch (error) {
+                console.error('Error fetching Pokémon data:', error);
+                showError('Failed to load Pokémon data. Please try again.');
+                isLoading = false;
+            }
+        }
+
+        // Fetch detailed Pokémon data for specific search
+        async function fetchPokemonDetails(nameOrId) {
+            try {
+                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${nameOrId.toLowerCase()}`);
+                const data = await response.json();
+                
+                const paddedId = String(data.id).padStart(3, '0');
+                const pokemon = {
+                    ...data,
+                    paddedId: paddedId,
+                    imageUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${paddedId}.png`,
+                    name: data.name
+                };
+                
+                displayPokemon([pokemon]);
+            } catch (error) {
+                console.error('Error fetching Pokémon details:', error);
+                showError('Pokémon not found. Please try another search.');
+            }
+        }
+
+        // Display Pokémon cards
+        function displayPokemon(pokemon) {
+            const grid = document.getElementById('pokemonGrid');
+            
+            if (pokemon.length === 0) {
+                grid.innerHTML = '<div class="loading">No Pokémon found. Please try another search.</div>';
+                return;
+            }
+            
+            grid.innerHTML = pokemon.map(p => {
+                const types = p.types ? p.types.map(t => t.type.name) : [];
+                const typeBadges = types.map(type => 
+                    `<span class="type-badge type-${type}">${type}</span>`
+                ).join('');
+                
+                return `
+                    <div class="pokemon-card">
+                        <div class="pokemon-image">
+                            <img src="${p.imageUrl}" alt="${p.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div style="display: none;">📷</div>
+                        </div>
+                        <div class="pokemon-info">
+                            <div class="pokemon-id">#${p.paddedId}</div>
+                            <h3 class="pokemon-name">${p.name}</h3>
+                            <div class="pokemon-types">${typeBadges}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            showLoading(false);
+        }
+
+        // Show/hide loading state
+        function showLoading(show) {
+            const grid = document.getElementById('pokemonGrid');
+            if (show) {
+                grid.innerHTML = '<div class="loading">Loading Pokémon data...</div>';
+            }
+        }
+
+        // Show error message
+        function showError(message) {
+            const grid = document.getElementById('pokemonGrid');
+            grid.innerHTML = `<div class="loading" style="color: #ef4444;">${message}</div>`;
+        }
+
+        // Handle search form submission
+        document.getElementById('searchForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const searchInput = document.getElementById('searchInput').value.trim();
+            if (!searchInput) {
+                displayPokemon(pokemonData);
+                return;
+            }
+            
+            showLoading(true);
+            await fetchPokemonDetails(searchInput);
+        });
+
+        // Load initial data when page loads
+        document.addEventListener('DOMContentLoaded', fetchPokemonData);
+    </script>
+</body>
+</html>
