@@ -4,8 +4,11 @@ import (
 	"encoding/json"
 	"html/template"
 	"log"
+	"mime"
 	"net/http"
 	"os"
+	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -168,8 +171,34 @@ func main() {
 		renderTemplate(w, r, "contact.html", pageData, templates, podName, namespace)
 	})
 
-	// Static files handler (CSS, JS, images)
-	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))
+	// Static files handler (CSS, JS, images) with proper MIME types
+	mux.Handle("/static/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Get the file path
+		path := r.URL.Path[1:] // Remove leading slash
+		
+		// Determine MIME type
+		ext := strings.ToLower(filepath.Ext(path))
+		contentType := mime.TypeByExtension(ext)
+		if contentType == "" {
+			contentType = "application/octet-stream"
+		}
+		
+		// Special case for CSS
+		if ext == ".css" {
+			contentType = "text/css; charset=utf-8"
+		}
+		
+		// Special case for JavaScript
+		if ext == ".js" {
+			contentType = "application/javascript; charset=utf-8"
+		}
+		
+		// Set headers
+		w.Header().Set("Content-Type", contentType)
+		
+		// Serve file
+		http.ServeFile(w, r, path)
+	}))
 	
 	// Wrap handler with access logger
 	logger := &accessLogger{
