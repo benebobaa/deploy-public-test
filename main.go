@@ -103,6 +103,10 @@ func renderTemplate(w http.ResponseWriter, r *http.Request, templateName string,
 
 
 func main() {
+	// Initialize MIME types
+	mime.AddExtensionType(".css", "text/css; charset=utf-8")
+	mime.AddExtensionType(".js", "application/javascript; charset=utf-8")
+	
 	// Read environment variables with defaults
 	title := getEnv("APP_TITLE", "Welcome to My Landing Page!")
 	description := getEnv("APP_DESCRIPTION", "A simple, configurable landing page built with Go")
@@ -183,18 +187,32 @@ func main() {
 			contentType = "application/octet-stream"
 		}
 		
-		// Special case for CSS
-		if ext == ".css" {
+		// Force correct MIME types for common static files
+		switch ext {
+		case ".css":
 			contentType = "text/css; charset=utf-8"
-		}
-		
-		// Special case for JavaScript
-		if ext == ".js" {
+		case ".js":
 			contentType = "application/javascript; charset=utf-8"
+		case ".jpg", ".jpeg":
+			contentType = "image/jpeg"
+		case ".png":
+			contentType = "image/png"
+		case ".gif":
+			contentType = "image/gif"
+		case ".svg":
+			contentType = "image/svg+xml"
+		case ".ico":
+			contentType = "image/x-icon"
+		case ".woff":
+			contentType = "font/woff"
+		case ".woff2":
+			contentType = "font/woff2"
 		}
 		
 		// Set headers
 		w.Header().Set("Content-Type", contentType)
+		// Add caching headers for static assets
+		w.Header().Set("Cache-Control", "public, max-age=31536000") // 1 year
 		
 		// Serve file
 		http.ServeFile(w, r, path)

@@ -28,6 +28,9 @@ COPY --from=builder /app/main .
 # Copy templates
 COPY --from=builder /app/templates ./templates
 
+# Copy static files
+COPY --from=builder /app/static ./static
+
 # Change ownership to non-root user
 RUN chown -R appuser:appgroup /root/
 
