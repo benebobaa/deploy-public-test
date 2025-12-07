@@ -122,6 +122,7 @@ func main() {
 	templates, err := template.ParseFiles(
 		"templates/index.html",
 		"templates/about.html",
+		"templates/blog.html",
 		"templates/docs.html",
 		"templates/pricing.html",
 		"templates/contact.html",
@@ -159,6 +160,14 @@ func main() {
 		pageData := basePageData
 		pageData.Title = "About - " + title
 		renderTemplate(w, r, "about.html", pageData, templates, podName, namespace)
+	})
+
+	// Blog page handler
+	mux.HandleFunc("/blog", func(w http.ResponseWriter, r *http.Request) {
+		pageData := basePageData
+		pageData.Title = "Blog - " + title
+		pageData.Description = "Read our latest articles, insights, and company updates"
+		renderTemplate(w, r, "blog.html", pageData, templates, podName, namespace)
 	})
 
 	// Documentation page handler

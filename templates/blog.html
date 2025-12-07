@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <meta name="description" content="{{.Description}}">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const navLinks = document.getElementById('nav-links');
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                mobileMenuToggle.classList.toggle('active');
+            });
+            
+            // Close menu when clicking on a link
+            navLinks.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    navLinks.classList.remove('active');
+                    mobileMenuToggle.classList.remove('active');
+                }
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!navLinks.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                    navLinks.classList.remove('active');
+                    mobileMenuToggle.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">StartupCo</div>
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/pokemon">Pokémon</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/pricing">Pricing</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+            <a href="/contact" class="cta-button">Get Started</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Our Blog</h1>
+                <p class="subtitle">Insights, updates, and stories from our team</p>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <div class="blog-grid">
+                    <article class="blog-post">
+                        <div class="post-meta">
+                            <span class="post-date">December 7, 2023</span>
+                            <span class="post-category">Technology</span>
+                        </div>
+                        <h2><a href="#">Building Scalable Web Applications with Go</a></h2>
+                        <p>Discover how Go's concurrency model and simple syntax make it an excellent choice for building high-performance web applications that can scale to millions of users.</p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </article>
+
+                    <article class="blog-post">
+                        <div class="post-meta">
+                            <span class="post-date">December 5, 2023</span>
+                            <span class="post-category">DevOps</span>
+                        </div>
+                        <h2><a href="#">Containerization Best Practices</a></h2>
+                        <p>Learn the essential best practices for containerizing your applications, including Docker optimization, security considerations, and Kubernetes deployment strategies.</p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </article>
+
+                    <article class="blog-post">
+                        <div class="post-meta">
+                            <span class="post-date">December 1, 2023</span>
+                            <span class="post-category">Product</span>
+                        </div>
+                        <h2><a href="#">New Features Release: What's Coming Next</a></h2>
+                        <p>Excited to share our latest product updates and upcoming features that will help you build better applications faster and more efficiently.</p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </article>
+
+                    <article class="blog-post">
+                        <div class="post-meta">
+                            <span class="post-date">November 28, 2023</span>
+                            <span class="post-category">Tutorial</span>
+                        </div>
+                        <h2><a href="#">Getting Started with Responsive Design</a></h2>
+                        <p>A comprehensive guide to creating mobile-first responsive designs that work seamlessly across all devices and screen sizes.</p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </article>
+
+                    <article class="blog-post">
+                        <div class="post-meta">
+                            <span class="post-date">November 25, 2023</span>
+                            <span class="post-category">Company</span>
+                        </div>
+                        <h2><a href="#">Our Journey: From Startup to Industry Leader</a></h2>
+                        <p>Reflecting on our company's growth, challenges we've overcome, and the milestones that shaped us into the company we are today.</p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </article>
+
+                    <article class="blog-post">
+                        <div class="post-meta">
+                            <span class="post-date">November 20, 2023</span>
+                            <span class="post-category">Security</span>
+                        </div>
+                        <h2><a href="#">Web Security Best Practices for 2024</a></h2>
+                        <p>Essential security measures every developer should implement to protect web applications from common vulnerabilities and emerging threats.</p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="newsletter">
+            <div class="container">
+                <h2>Subscribe to Our Newsletter</h2>
+                <p>Get the latest updates, tutorials, and insights delivered to your inbox</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit" class="cta-button">Subscribe</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>StartupCo</h3>
+                    <p>Building the future of web applications with innovative solutions.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter">𝕏</a>
+                        <a href="#" aria-label="GitHub">⚡</a>
+                        <a href="#" aria-label="LinkedIn">in</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="/features">Features</a></li>
+                        <li><a href="/pricing">Pricing</a></li>
+                        <li><a href="/docs">Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 StartupCo. All rights reserved.</p>
+                <p>Environment: {{.Environment}} | Version: {{.Version}}</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
