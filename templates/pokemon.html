@@ -6,12 +6,55 @@
     <title>Pokémon Database</title>
     <meta name="description" content="Explore Pokémon data, types, and abilities">
     <link rel="stylesheet" href="/static/css/style.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const navLinks = document.getElementById('nav-links');
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                mobileMenuToggle.classList.toggle('active');
+            });
+            
+            // Close menu when clicking on a link
+            navLinks.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    navLinks.classList.remove('active');
+                    mobileMenuToggle.classList.remove('active');
+                }
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!navLinks.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                    navLinks.classList.remove('active');
+                    mobileMenuToggle.classList.remove('active');
+                }
+            });
+        });
+    </script>
     <style>
         .pokemon-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
             padding: 2rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .pokemon-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .pokemon-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1rem 0;
+            }
         }
         
         .pokemon-card {
@@ -140,7 +183,12 @@
     <header>
         <nav class="container">
             <div class="logo">PokéDex</div>
-            <ul class="nav-links">
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="nav-links">
                 <li><a href="/">Home</a></li>
                 <li><a href="/about">About</a></li>
                 <li><a href="/pokemon">Pokémon</a></li>

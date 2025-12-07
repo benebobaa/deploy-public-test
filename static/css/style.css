@@ -446,27 +446,218 @@ footer {
     color: #9ca3af;
 }
 
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 1001;
+}
+
+.mobile-menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: var(--dark-color);
+    margin: 5px 0;
+    transition: 0.3s;
+    border-radius: 3px;
+}
+
 /* Responsive Design */
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
+@media (max-width: 992px) {
+    .container {
+        padding: 0 15px;
     }
     
     .hero h1 {
-        font-size: 2.5rem;
+        font-size: 2.8rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+    
+    .nav-links {
+        display: none;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background: white;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 5rem 2rem 2rem;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease;
+        z-index: 1000;
+    }
+    
+    .nav-links.active {
+        display: flex;
+        right: 0;
+    }
+    
+    .nav-links li {
+        margin: 1rem 0;
+        width: 100%;
+    }
+    
+    .nav-links a {
+        font-size: 1.1rem;
+        padding: 0.75rem 0;
+        display: block;
+        width: 100%;
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+    
+    nav {
+        padding: 1rem 0;
+    }
+    
+    nav .cta-button {
+        display: none;
+    }
+    
+    .hero {
+        padding: 4rem 0;
+    }
+    
+    .hero h1 {
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+    }
+    
+    .hero .subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
     }
     
     .hero-buttons {
         flex-direction: column;
         align-items: center;
+        gap: 1rem;
+    }
+    
+    .hero-buttons .cta-button {
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    section {
+        padding: 3rem 0;
+    }
+    
+    section h2 {
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    section p {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .feature-card {
+        padding: 1.5rem;
+    }
+    
+    .feature-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
     }
     
     .pricing-card.featured {
         transform: none;
+        border: none;
     }
     
-    .features-grid,
     .pricing-cards {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .hero {
+        padding: 3rem 0;
+    }
+    
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .hero .subtitle {
+        font-size: 1rem;
+    }
+    
+    section {
+        padding: 2.5rem 0;
+    }
+    
+    section h2 {
+        font-size: 1.8rem;
+    }
+    
+    .feature-card {
+        padding: 1.25rem;
+    }
+    
+    .pricing-card {
+        padding: 1.5rem;
+    }
+    
+    .pricing-price {
+        font-size: 2.5rem;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        text-align: center;
+    }
+    
+    .footer-section ul {
+        text-align: center;
     }
 }
